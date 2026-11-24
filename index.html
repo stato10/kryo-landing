@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KRYO — Cold Precision Studio</title>
 <meta name="description" content="KRYO is a design studio that freezes ideas into permanent things.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27%238fe3ff%27 stroke-width=%271.6%27%3E%3Cpath d=%27M12 1.5 21 7v10l-9 5.5L3 17V7z%27/%3E%3Cpath d=%27M12 1.5v21M3 7l18 10M21 7 3 17%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -71,6 +72,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .progress{position:absolute;right:calc(var(--pad) + 2px);top:50%;transform:translateY(-50%);width:1px;height:120px;background:var(--line)}
 .progress i{position:absolute;inset:0;background:var(--ink);transform-origin:top;transform:scaleY(0)}
 .hud-fade{opacity:0}
+.hud-bl,.hud-br{transition:opacity .5s}
+.at-end .hud-bl,.at-end .hud-br{opacity:0;pointer-events:none}
 
 /* ---------- cursor ---------- */
 .cursor,.cursor-ring{position:fixed;left:0;top:0;pointer-events:none;z-index:60;border-radius:50%;mix-blend-mode:difference}
@@ -839,7 +842,7 @@ function applyNature(root) {
 }
 
 /* ---- hover on 3D work pieces ---- */
-const hoverables = [[polaris, 3], [halo, 4], [rime, 5], [portal, 6]];
+const hoverables = [[polaris, 3], [halo, 4], [rime, 5]];
 hoverables.forEach(([o]) => (o.userData.s = 1));
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
 let hovered = null;
@@ -991,6 +994,7 @@ secs.forEach((sec, i) => {
     onToggle: self => {
       if (!self.isActive) return;
       if (i !== curSec) { curSec = i; audio.chime(); }
+      document.body.classList.toggle('at-end', i === secs.length - 1);
       $('#sec-idx').textContent = `${String(i + 1).padStart(2, '0')} / ${String(secs.length).padStart(2, '0')}`;
       $('#sec-name').dataset.text = sec.dataset.name;
       scramble($('#sec-name'), .6);
